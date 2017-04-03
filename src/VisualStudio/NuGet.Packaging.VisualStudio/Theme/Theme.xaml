@@ -17,7 +17,15 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static theme:Brushes.WindowForegroundKey}}"/>
     </Style>
-    <Style x:Key="RadioButtonBaseStyle" TargetType="RadioButton" BasedOn="{StaticResource ThemedRadioButtonStyle}">
+	<Style x:Key="LabelBaseStyle" TargetType="Label">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static theme:Brushes.WindowForegroundKey}}"/>
+	</Style>
+	<Style x:Key="CheckBoxBaseStyle" TargetType="CheckBox">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static theme:Brushes.WindowForegroundKey}}"/>
+	</Style>
+	<Style x:Key="RadioButtonBaseStyle" TargetType="RadioButton" BasedOn="{StaticResource ThemedRadioButtonStyle}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static theme:Brushes.WindowForegroundKey}}"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -76,7 +84,7 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
-    <Style x:Key="FooterGrid" TargetType="Grid">
+	<Style x:Key="FooterGrid" TargetType="Grid">
         <Setter Property="Background" Value="{DynamicResource {x:Static theme:Brushes.ToolBarBackgroundKey}}" />
         <Setter Property="Grid.ColumnSpan" Value="50"/>
     </Style>
@@ -105,14 +113,12 @@
     </Style>
 
     <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}"/>
-    
-    <Style TargetType="RadioButton" BasedOn="{StaticResource RadioButtonBaseStyle}">
-    </Style>
+	<Style TargetType="Label" BasedOn="{StaticResource LabelBaseStyle}"/>
+	<Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxBaseStyle}"/>
+	<Style TargetType="RadioButton" BasedOn="{StaticResource RadioButtonBaseStyle}" />
+	<Style TargetType="Viewbox" BasedOn="{StaticResource RadioViewboxBaseStyle}" />
 
-    <Style TargetType="Viewbox" BasedOn="{StaticResource RadioViewboxBaseStyle}">
-    </Style>
-
-    <Style TargetType="UserControl">
+	<Style TargetType="UserControl">
         <Setter Property="Background" Value="{DynamicResource {x:Static theme:Brushes.PanelBackground}}" />
     </Style>
 

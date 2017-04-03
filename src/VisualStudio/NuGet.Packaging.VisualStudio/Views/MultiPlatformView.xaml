@@ -6,7 +6,8 @@
         xmlns:vs="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
         xmlns:local="clr-namespace:NuGet.Packaging.VisualStudio"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource ThemedPanelBackground}"
+        Background="{DynamicResource ThemedPanelBackground}" 
+		Foreground="{DynamicResource ThemedDocumentForeground}"
         mc:Ignorable="d"
         Title="New Multiplatform Library" Height="300" Width="400">
     <vs:DialogWindow.Resources>
