@@ -51,7 +51,8 @@ Copyright (c) .NET Foundation. All rights reserved.
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectCapability Include="Packable" Condition="'$(IsPackable)' == 'true'"/>
+		<ProjectCapability Include="Packable" Condition="'$(IsPackable)' == 'true'" />
+		<ProjectCapability Include="Pack" Condition="'$(IsPackable)' == 'true'" />
 
 		<!-- Converts potentially multiple $(ReferenceAssemblyFrameworks) into @(ReferenceAssemblyFramework) -->
 		<ReferenceAssemblyFramework Include="$(ReferenceAssemblyFrameworks)" Condition="'$(ReferenceAssemblyFrameworks)' != ''" />
@@ -196,24 +197,30 @@ Copyright (c) .NET Foundation. All rights reserved.
 	-->
 	<PropertyGroup>
 		<!-- Only depend on ResolveReferences if we need to include framework references -->
-		<GetPackageContentsDependsOn Condition="'$(IncludeFrameworkReferencesInPackage)' == 'true'">
+		<InferPackageContentsDependsOn Condition="'$(IncludeFrameworkReferencesInPackage)' == 'true'">
 			ResolveReferences
-		</GetPackageContentsDependsOn>
-		<GetPackageContentsDependsOn>
-			$(GetPackageContentsDependsOn);
+		</InferPackageContentsDependsOn>
+		<InferPackageContentsDependsOn>
+			$(InferPackageContentsDependsOn);
 			GetPackageTargetPath;
-			ReadLegacyDependencies;
-		</GetPackageContentsDependsOn>
-		<GetPackageContentsDependsOn Condition="'$(IncludeOutputsInPackage)' == 'true'">
-			$(GetPackageContentsDependsOn)
+			ReadLegacyDependencies
+		</InferPackageContentsDependsOn>
+		<InferPackageContentsDependsOn Condition="'$(IncludeOutputsInPackage)' == 'true'">
+			$(InferPackageContentsDependsOn);
 			AssignProjectConfiguration;
 			_SplitProjectReferencesByFileExistence;
 			_SplitProjectReferencesByIsNuGetized;
 			AllProjectOutputGroups;
-			_GetReferenceAssemblyTargetPaths;
-		</GetPackageContentsDependsOn>
+			_GetReferenceAssemblyTargetPaths
+		</InferPackageContentsDependsOn>
+		<GetPackageContentsDependsOn>InferPackageContents</GetPackageContentsDependsOn>
 	</PropertyGroup>
+	
 	<Target Name="GetPackageContents" DependsOnTargets="$(GetPackageContentsDependsOn)" Returns="@(_PackageContent)">
+	
+	</Target>
+
+	<Target Name="InferPackageContents" DependsOnTargets="$(GetPackageContentsDependsOn)" Returns="@(_PackageContent)">
 		<Error Condition="'@(_NonNuGetizedProjectReference)' != ''"
 				   Code="NG0011"
 				   Text="Some project references cannot be properly packaged. Please install the NuGet.Build.Packaging package on the following projects: @(_NonNuGetizedProjectReference)." />
