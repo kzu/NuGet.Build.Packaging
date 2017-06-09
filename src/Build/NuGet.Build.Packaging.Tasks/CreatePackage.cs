@@ -26,6 +26,8 @@ namespace NuGet.Build.Packaging.Tasks
 
 		public string NuspecFile { get; set; }
 
+		public ITaskItem[] Properties { get; set; }
+
 		[Output]
 		public ITaskItem OutputPackage { get; set; }
 
@@ -184,7 +186,16 @@ namespace NuGet.Build.Packaging.Tasks
 			var builder = new PackageBuilder();
 			var manifest = CreateManifest();
 
+			if (Properties != null)
+			{
+				foreach (var item in Properties)
+				{
+					builder.Properties[item.ItemSpec] = item.GetMetadata("Value");
+				}
+			}
+
 			builder.Populate(manifest.Metadata);
+
 			// We don't use PopulateFiles because that performs search expansion, base path 
 			// extraction and the like, which messes with our determined files to include.
 			// TBD: do we support wilcard-based include/exclude?
