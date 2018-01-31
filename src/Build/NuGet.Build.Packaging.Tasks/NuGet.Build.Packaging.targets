@@ -398,6 +398,9 @@ Copyright (c) .NET Foundation. All rights reserved.
 
 	<Import Project="NuGet.Build.Packaging.ReferenceAssembly.targets" />
 	<Import Project="NuGet.Build.Packaging.Authoring.targets" Condition="'$(IsPackagingProject)' == 'true'" />
-	<Import Project="NuGet.Build.Packaging.CrossTargeting.targets" Condition="'$(IsCrossTargetingBuild)' == 'true' And '$(FromPackagingProject)' == 'true'" />
+	<Import Project="NuGet.Build.Packaging.MultiTargeting.targets" 
+					Condition="'$(TargetFrameworks)' != '' And '$(FromPackagingProject)' == 'true' And Exists('NuGet.Build.Packaging.MultiTargeting.targets')" />
+	<Import Project="..\buildMultiTargeting\NuGet.Build.Packaging.MultiTargeting.targets"
+					Condition="'$(TargetFrameworks)' != '' And '$(FromPackagingProject)' == 'true' And Exists('..\buildMultiTargeting\NuGet.Build.Packaging.MultiTargeting.targets')" />
 	<Import Project="NuGet.Build.Packaging.Legacy.targets" />
 </Project>
