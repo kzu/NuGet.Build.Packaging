@@ -31,7 +31,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-	<None Remove="Scenarios\**\obj\**\*.*;Scenarios\**\bin\**\*.*" />
+    <Compile Remove="Scenarios\**\obj\**\*.cs" />
+    <None Remove="Scenarios\**\obj\**\*.*;Scenarios\**\bin\**\*.*" />
     <None Remove="App.config" />
     <None Include="Scenarios\**\*.*proj;Scenarios\**\*.sln" />
   </ItemGroup>
