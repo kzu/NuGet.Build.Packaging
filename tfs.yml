@@ -1,0 +1,42 @@
+queue: Hosted VS2017
+
+steps:
+
+- checkout: self
+  clean: true
+
+- powershell: |
+    reg ADD "HKLM\Software\Microsoft\StrongName\Verification\*,*" /f
+    if ($env:PROCESSOR_ARCHITECTURE -eq "AMD64") {
+      reg ADD "HKLM\Software\Wow6432Node\Microsoft\StrongName\Verification\*,*" /f
+    }
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.4'
+
+- task: MSBuild@1
+  displayName: Restore
+  inputs:
+    solution: build.proj
+    msbuildArguments: /t:Restore /bl:"$(Build.ArtifactStagingDirectory)\restore.binlog"
+
+- task: MSBuild@1
+  displayName: Build
+  inputs:
+    solution: build.proj
+    msbuildArguments: /t:All /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)" /bl:"$(Build.ArtifactStagingDirectory)\build.binlog"
+
+- task: MSBuild@1
+  displayName: Push
+  inputs:
+    solution: build.proj
+    msbuildArguments: /t:Push /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)" /p:StorageAccessKey=$(StorageAccessKey) /bl:"$(Build.ArtifactStagingDirectory)\push.binlog"
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  condition: always()
+  inputs:
+    PathtoPublish: $(Build.ArtifactStagingDirectory)
+    ArtifactName: output
+    ArtifactType: Container
